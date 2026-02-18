@@ -1,0 +1,11 @@
+[package]
+name = "yurei"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.0", features = ["derive"] }
+tokio = { version = "1", features = ["full", "process"] }
+serde_json = "1.0"
+console = "0.15"
+anyhow = "1.0"
