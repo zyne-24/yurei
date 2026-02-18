@@ -8,7 +8,7 @@ pub fn show_header() -> Result<()> {
         let term = Term::stdout();
         term.clear_screen()?;
         println!("{}", style("========================================").cyan().bold());
-        println!("{}", style("            RUST-TUBE CLI               ").cyan().bold());
+        println!("{}", style("            YUREI - YT CLI              ").cyan().bold());
         println!("{}", style("========================================").cyan().bold());
         Ok(())
 }
@@ -25,27 +25,27 @@ pub fn select_video(videos: &[VideoItem], current_page: u64) -> Result<Selection
         let mut fzf_input = String::new();
 
         for v in videos {
-                fzf_input.push_str(&format!("{} | {} | {} | {} | {}\n", 
+                fzf_input.push_str(&format!("{} │ {} │ {} │ {} │ {}\n", 
                             v.title, v.channel, v.duration, v.id, v.thumbnail));
             }
 
-        fzf_input.push_str("➡️  NEXT PAGE | Nav | - | next | -\n");
+        fzf_input.push_str("➡️  NEXT PAGE │ Nav │ - │ next │ -\n");
         if current_page > 1 {
-                fzf_input.push_str("⬅️  PREV PAGE | Nav | - | prev | -\n");
+                fzf_input.push_str("⬅️  PREV PAGE │ Nav │ - │ prev │ -\n");
         }
-    fzf_input.push_str("❌ QUIT | Exit | - | quit | -\n");
+    fzf_input.push_str("❌ QUIT │ Exit │ - │ quit │ -\n");
 
         let mut fzf = Command::new("fzf")
                 .args([
                         "--ansi",
-                        "--delimiter", " \\| ",
+                        "--delimiter", " │ ",
                         "--with-nth", "1,2,3",
-                        "--header", &format!("Page {} (Select to Preview)", current_page),
+                        "--header", &format!("Page {} (Enhanced Preview)", current_page),
                         "--layout", "reverse",
                         "--height", "100%",
                         "--cycle",
-                        "--preview", "curl -sL {5} | chafa -f symbols --size=40x20 -", 
-                        "--preview-window", "right:50%",
+                        "--preview", "curl -sL {5} | chafa --format=symbols --symbols=all --colors=full --size=60x30 --stretch -", 
+                        "--preview-window", "right:60%",
                         "--pointer", "▶",
                     ])
                     .stdin(Stdio::piped())
@@ -61,7 +61,9 @@ pub fn select_video(videos: &[VideoItem], current_page: u64) -> Result<Selection
                 return Ok(Selection::Quit);
             }
 
-        let parts: Vec<&str> = selected_text.split('|').map(|s| s.trim()).collect();
+        let parts: Vec<&str> = selected_text.split(" │ ").map(|s| s.trim()).collect();
+        if parts.len() < 4 { return Ok(Selection::Quit); }
+        
         let id_or_action = parts[3];
 
         if id_or_action == "next" {
@@ -82,7 +84,7 @@ pub fn select_video(videos: &[VideoItem], current_page: u64) -> Result<Selection
 pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
         let mut fzf_input = String::new();
         for f in formats {
-                fzf_input.push_str(&format!("{:<8} | {:<5} | {:<10} | {} | {}\n", 
+                fzf_input.push_str(&format!("{:<8} │ {:<5} │ {:<10} │ {} │ {}\n", 
                             f.resolution, f.ext, format!("{}fps", f.fps), f.vcodec, f.id));
             }
 
@@ -92,7 +94,7 @@ pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
                         "--layout", "reverse", 
                         "--cycle", 
                         "--header", "Select Resolution", 
-                        "--delimiter", "\\|",
+                        "--delimiter", " │ ",
                         "--with-nth", "1,2,3,4"
                     ])
                     .stdin(Stdio::piped())
@@ -105,8 +107,9 @@ pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
 
         if selected.trim().is_empty() { return Ok(None); }
 
-        let parts: Vec<&str> = selected.split('|').map(|s| s.trim()).collect();
-        let selected_id = parts[4];
+        let parts: Vec<&str> = selected.split(" │ ").map(|s| s.trim()).collect();
+        if parts.len() < 5 { return Ok(None); }
+        let selected_id = parts[4].trim();
 
         Ok(formats.iter().find(|f| f.id == selected_id).cloned())
 }
