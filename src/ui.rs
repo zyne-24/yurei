@@ -7,9 +7,20 @@ use std::process::{Command, Stdio};
 pub fn show_header() -> Result<()> {
         let term = Term::stdout();
         term.clear_screen()?;
-        println!("{}", style("========================================").cyan().bold());
-        println!("{}", style("            YUREI - YT CLI              ").cyan().bold());
-        println!("{}", style("========================================").cyan().bold());
+
+        let header = r#"
+                                    _ 
+      _   _   _   _   _ __    ___  (_)
+     | | | | | | | | | '__|  / _ \ | |
+     | |_| | | |_| | | |    |  __/ | |
+      \__, |  \__,_| |_|     \___| |_|
+      |___/                           
+        "#;
+
+        println!("{}", style(header).cyan().bold());
+        println!("{}", style("          YUREI - YT CLI          ").cyan().bold());
+        println!("{}", style("==================================").cyan().bold());
+        
         Ok(())
 }
 
