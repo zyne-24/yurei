@@ -20,3 +20,10 @@ pub enum Action {
         Stream,
         Download,
 }
+
+pub enum Selection {
+    Video(VideoItem),
+        NextPage,
+            PrevPage,
+                Quit,
+                }

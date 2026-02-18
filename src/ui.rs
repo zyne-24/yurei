@@ -1,4 +1,4 @@
-use crate::types::{Action, VideoFormat, VideoItem};
+use crate::types::{Action, Selection, VideoFormat, VideoItem};
 use anyhow::Result;
 use console::{style, Term};
 use std::io::Write;
@@ -21,22 +21,30 @@ pub fn get_user_input(prompt: &str) -> Result<String> {
         Ok(input.trim().to_string())
 }
 
-pub fn select_video(videos: &[VideoItem]) -> Result<Option<VideoItem>> {
+pub fn select_video(videos: &[VideoItem], current_page: u64) -> Result<Selection> {
         let mut fzf_input = String::new();
+
         for v in videos {
                 fzf_input.push_str(&format!("{} | {} | {} | {} | {}\n", 
                             v.title, v.channel, v.duration, v.id, v.thumbnail));
             }
+
+        fzf_input.push_str("➡️  NEXT PAGE | Nav | - | next | -\n");
+        if current_page > 1 {
+                fzf_input.push_str("⬅️  PREV PAGE | Nav | - | prev | -\n");
+        }
+    fzf_input.push_str("❌ QUIT | Exit | - | quit | -\n");
 
         let mut fzf = Command::new("fzf")
                 .args([
                         "--ansi",
                         "--delimiter", " \\| ",
                         "--with-nth", "1,2,3",
-                        "--header", "Select Video",
+                        "--header", &format!("Page {} (Select to Preview)", current_page),
                         "--layout", "reverse",
                         "--height", "100%",
-                        "--preview", "chafa -f symbols --size=40x20 {5}",
+                        "--cycle",
+                        "--preview", "curl -sL {5} | chafa -f symbols --size=40x20 -", 
                         "--preview-window", "right:50%",
                         "--pointer", "▶",
                     ])
@@ -47,16 +55,28 @@ pub fn select_video(videos: &[VideoItem]) -> Result<Option<VideoItem>> {
         fzf.stdin.as_mut().unwrap().write_all(fzf_input.as_bytes())?;
         
         let output = fzf.wait_with_output()?;
-        let selected = String::from_utf8_lossy(&output.stdout);
+        let selected_text = String::from_utf8_lossy(&output.stdout);
 
-        if selected.trim().is_empty() {
-                return Ok(None);
+        if selected_text.trim().is_empty() {
+                return Ok(Selection::Quit);
             }
 
-        let parts: Vec<&str> = selected.split('|').map(|s| s.trim()).collect();
-        let selected_id = parts[3];
+        let parts: Vec<&str> = selected_text.split('|').map(|s| s.trim()).collect();
+        let id_or_action = parts[3];
 
-        Ok(videos.iter().find(|v| v.id == selected_id).cloned())
+        if id_or_action == "next" {
+                Ok(Selection::NextPage)
+            } else if id_or_action == "prev" {
+                Ok(Selection::PrevPage)
+            } else if id_or_action == "quit" {
+                Ok(Selection::Quit)
+            } else {
+                if let Some(video) = videos.iter().find(|v| v.id == id_or_action) {
+                        Ok(Selection::Video(video.clone()))
+                    } else {
+                        Ok(Selection::Quit)
+                    }
+            }
 }
 
 pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
@@ -70,6 +90,7 @@ pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
                 .args([
                         "--height", "40%", 
                         "--layout", "reverse", 
+                        "--cycle", 
                         "--header", "Select Resolution", 
                         "--delimiter", "\\|",
                         "--with-nth", "1,2,3,4"
@@ -82,9 +103,7 @@ pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
         let output = fzf.wait_with_output()?;
         let selected = String::from_utf8_lossy(&output.stdout);
 
-        if selected.trim().is_empty() {
-                return Ok(None);
-            }
+        if selected.trim().is_empty() { return Ok(None); }
 
         let parts: Vec<&str> = selected.split('|').map(|s| s.trim()).collect();
         let selected_id = parts[4];
@@ -94,7 +113,7 @@ pub fn select_format(formats: &[VideoFormat]) -> Result<Option<VideoFormat>> {
 
 pub fn select_action() -> Result<Option<Action>> {
         let mut fzf = Command::new("fzf")
-                .args(["--height", "20%", "--layout", "reverse", "--header", "Action"])
+                .args(["--height", "20%", "--layout", "reverse", "--cycle", "--header", "Action"])
                 .stdin(Stdio::piped())
                 .stdout(Stdio::piped())
                 .spawn()?;
