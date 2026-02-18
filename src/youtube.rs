@@ -3,13 +3,20 @@ use anyhow::Result;
 use serde_json::Value;
 use std::process::Command;
 
-pub fn search(query: &str) -> Result<Vec<VideoItem>> {
+pub fn search(query: &str, page: u64) -> Result<Vec<VideoItem>> {
+        let page_size = 10;
+        let fetch_limit = page * page_size; 
+        let playlist_start = (page - 1) * page_size + 1;
+        let playlist_end = page * page_size;
+
         let output = Command::new("yt-dlp")
                 .args([
-                        format!("ytsearch30:{}", query),
+                        format!("ytsearch{}:{}", fetch_limit, query),
                         "--dump-json".into(),
                         "--flat-playlist".into(),
                         "--no-warnings".into(),
+                        "--playlist-start".into(), playlist_start.to_string(),
+                        "--playlist-end".into(), playlist_end.to_string(),
                     ])
                     .output()?;
 
