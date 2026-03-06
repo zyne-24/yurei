@@ -3,12 +3,12 @@
 ## 🚀 Installation
 #### Via Cargo
 ```bash
-cargo install --git https://github.com/username/yurei
+cargo install --git https://github.com/zyne-24/yurei
 ```
 
 #### Manual Install
 ```bash
-git clone https://github.com/username/yurei && cd yurei && cargo build --release && sudo cp target/release/yurei /usr/local/bin/
+git clone https://github.com/zyne-24/yurei && cd yurei && cargo build --release && sudo cp target/release/yurei /usr/local/bin/
 ```
 > [!IMPORTANT]
 > **Dependencies:** Ensure [yt-dlp](https://github.com/yt-dlp/yt-dlp), [fzf](https://github.com/junegunn/fzf), [mpv](https://github.com/mpv-player/mpv), and [chafa](https://github.com/hpjansson/chafa) are installed on your system.
@@ -42,8 +42,8 @@ yurei <query>
 
 **YUREI** is built with the same spirit of performance and simplicity found in these projects:
 
-* [**animeku-cli**](https://github.com/p-as-p/animeku-cli) - For demonstrating how **Rust** can create a clean, incredibly fast streaming experience in the terminal.
-* [**yt-cli**](https://github.com/L-U-C-K-Y-A-N-O/yt-cli) - For the initial concept of interacting with YouTube via command line.
+* [**animeku-cli**](https://github.com/lucasbuilds/animeku-cli) - For demonstrating how **Rust** can create a clean, incredibly fast streaming experience in the terminal.
+* [**yt-cli**](https://github.com/BishrGhalil/yt-cli) - For the initial concept of interacting with YouTube via command line.
 * [**yt-fzf**](https://github.com/pystardust/ytfzf) - For the powerful logic of combining `yt-dlp` and `fzf`.
 
 ---
