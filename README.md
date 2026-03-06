@@ -31,11 +31,11 @@ yurei <query>
  * `runner.rs`: triggers mpv for streaming and yt-dlp for downloading.
  * `types.rs`: defines shared structs and enums for data consistency.
 ## Modification
- * High-Res Previews: For terminals supporting `Kitty` or `Sixel` protocols, replace the `chafa` command in `ui.rs` with `icat` or `chafa --format=sixel` for sharper thumbnails.
- * Audio-Only Mode: Add an `--audio` flag in `main.rs` and pass the `--no-video` argument to `mpv` in `runner.rs`.
- * Result Caching: Store search results in memory or a temp file to make "Previous Page" navigation instant without re-fetching.
- * Custom FZF Bindings: Use `--bind` flags in `ui.rs` to create shortcuts (e.g., CTRL+S to stream immediately).
- * Async Fetching: Use `tokio::process` to keep the UI responsive during heavy metadata extraction.
+ * **High-Res Previews**: For terminals supporting `Kitty` or `Sixel` protocols, replace the `chafa` command in `ui.rs` with `icat` or `chafa --format=sixel` for sharper thumbnails.
+ * **Audio-Only Mode**: Add an `--audio` flag in `main.rs` and pass the `--no-video` argument to `mpv` in `runner.rs`.
+ * **Result Caching**: Store search results in memory or a temp file to make "Previous Page" navigation instant without re-fetching.
+ * **Custom FZF Bindings**: Use `--bind` flags in `ui.rs` to create shortcuts (e.g., CTRL+S to stream immediately).
+ * **Async Fetching**: Use `tokio::process` to keep the UI responsive during heavy metadata extraction.
    
 
 
