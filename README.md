@@ -11,7 +11,17 @@ cargo install --git https://github.com/username/yurei
 git clone https://github.com/username/yurei && cd yurei && cargo build --release && sudo cp target/release/yurei /usr/local/bin/
 ```
 > [!IMPORTANT]
-> Ensure yt-dlp, fzf, mpv, and chafa are installed on your system.
+> **Dependencies:** Ensure [yt-dlp](https://github.com/yt-dlp/yt-dlp), [fzf](https://github.com/junegunn/fzf), [mpv](https://github.com/mpv-player/mpv), and [chafa](https://github.com/hpjansson/chafa) are installed on your system.
+
+## ⌨️ Usage
+```bash
+yurei
+```
+
+Search directly for a video
+```bash
+yurei <query>
+```
 
 ## 🔍 Structure
  * `main.rs`: Core logic; manages program flow, CLI arguments, and pagination.
@@ -25,13 +35,15 @@ git clone https://github.com/username/yurei && cd yurei && cargo build --release
  * Result Caching: Store search results in memory or a temp file to make "Previous Page" navigation instant without re-fetching.
  * Custom FZF Bindings: Use `--bind` flags in `ui.rs` to create shortcuts (e.g., CTRL+S to stream immediately).
  * Async Fetching: Use `tokio::process` to keep the UI responsive during heavy metadata extraction.
+   
+---
 
-## ⌨️ Usage
-```bash
-yurei
-```
+## 🌟 Inspired by
 
-Search directly for a video
-```bash
-yurei <query>
-```
+**YUREI** is built with the same spirit of performance and simplicity found in these projects:
+
+* [**animeku-cli**](https://github.com/p-as-p/animeku-cli) - For demonstrating how **Rust** can create a clean, incredibly fast streaming experience in the terminal.
+* [**yt-cli**](https://github.com/L-U-C-K-Y-A-N-O/yt-cli) - For the initial concept of interacting with YouTube via command line.
+* [**yt-fzf**](https://github.com/pystardust/ytfzf) - For the powerful logic of combining `yt-dlp` and `fzf`.
+
+---
