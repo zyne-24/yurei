@@ -1,5 +1,7 @@
 # YUREI - Youtube CLI
 **YUREI** is a lightweight, interactive YouTube CLI written in Rust. It allows you to search, stream, and download videos directly from your terminal using the power of yt-dlp and fzf.
+
+
 ## 🚀 Installation
 #### Via Cargo
 ```bash
@@ -13,6 +15,7 @@ git clone https://github.com/zyne-24/yurei && cd yurei && cargo build --release 
 > [!IMPORTANT]
 > **Dependencies:** Ensure [yt-dlp](https://github.com/yt-dlp/yt-dlp), [fzf](https://github.com/junegunn/fzf), [mpv](https://github.com/mpv-player/mpv), and [chafa](https://github.com/hpjansson/chafa) are installed on your system.
 
+
 ## ⌨️ Usage
 ```bash
 yurei
@@ -22,6 +25,7 @@ Search directly for a video
 ```bash
 yurei <query>
 ```
+
 
 ## 🔍 Structure
  * `main.rs`: Core logic; manages program flow, CLI arguments, and pagination.
@@ -36,6 +40,8 @@ yurei <query>
  * Custom FZF Bindings: Use `--bind` flags in `ui.rs` to create shortcuts (e.g., CTRL+S to stream immediately).
  * Async Fetching: Use `tokio::process` to keep the UI responsive during heavy metadata extraction.
    
+
+
 ---
 
 ## 🌟 Inspired by
