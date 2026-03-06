@@ -23,7 +23,7 @@ Search directly for a video
 ```bash
 yurei <query>
 ```
-<br>
+
 ## 🔍 Structure
  * `main.rs`: Core logic; manages program flow, CLI arguments, and pagination.
  * `youtube.rs`: Data fetcher; interfaces with yt-dlp to extract video metadata and formats.
