@@ -11,7 +11,7 @@ cargo install --git https://github.com/username/yurei
 git clone https://github.com/username/yurei && cd yurei && cargo build --release && sudo cp target/release/yurei /usr/local/bin/
 ```
 > [!IMPORTANT]
-> Dependencies: Ensure yt-dlp, fzf, mpv, and chafa are installed on your system.
+> Ensure yt-dlp, fzf, mpv, and chafa are installed on your system.
 
 ## 🔍 Structure
  * main.rs: Core logic; manages program flow, CLI arguments, and pagination.
@@ -30,9 +30,8 @@ git clone https://github.com/username/yurei && cd yurei && cargo build --release
 ```bash
 yurei
 ```
+
+Search directly for a video
 ```bash
-yurei "search query"
-```
-```bash 
-yurei --sub "video title"
+yurei <query>
 ```
