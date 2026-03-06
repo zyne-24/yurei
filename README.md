@@ -25,11 +25,11 @@ yurei <query>
 ```
 
 ## 🔍 Structure
- * `main.rs`: Core logic; manages program flow, CLI arguments, and pagination.
- * `youtube.rs`: Data fetcher; interfaces with yt-dlp to extract video metadata and formats.
- * `ui.rs`: Interface layer; handles fzf menus and terminal thumbnail previews.
- * `runner.rs`: Executor; triggers mpv for streaming and yt-dlp for downloading.
- * `types.rs`: Blueprints; defines shared structs and enums for data consistency.
+ * `main.rs`: manages program flow, CLI arguments, and pagination.
+ * `youtube.rs`: interfaces with yt-dlp to extract video metadata and formats.
+ * `ui.rs`: handles fzf menus and terminal thumbnail previews.
+ * `runner.rs`: triggers mpv for streaming and yt-dlp for downloading.
+ * `types.rs`: defines shared structs and enums for data consistency.
 ## Modification
  * High-Res Previews: For terminals supporting `Kitty` or `Sixel` protocols, replace the `chafa` command in `ui.rs` with `icat` or `chafa --format=sixel` for sharper thumbnails.
  * Audio-Only Mode: Add an `--audio` flag in `main.rs` and pass the `--no-video` argument to `mpv` in `runner.rs`.
